@@ -1,0 +1,161 @@
+//Дан указатель p1 на корень дерева.
+//Написать функцию вывода количества вершин дерева, являющихся левыми дочерними вершинами(корень дерева не учитывать).
+#include <iostream>
+using namespace std;
+int sum = 0;
+struct bintree
+{
+	int data;
+	bintree *left,*right;
+};
+bintree *tree;
+
+void insert(int x, bintree **p)
+{
+	if (*p == NULL)
+	{
+		*p = new(bintree);
+		(*p)->data = x;
+		(*p)->left = (*p)->right = NULL;
+	}
+	else
+		if (x < (**p).data)
+			insert(x, &((**p).left));
+		else
+			if (x > (*p)->data)
+				insert(x, &(*p)->right);
+}
+
+void build_tree()
+{
+	int x;
+	cout << "Give me numbers (0 - end of building): " << endl; cin >> x;
+	while (x != 0)
+	{
+		insert(x, &tree);
+			cin >> x;
+	}
+}
+
+
+void print_tree(bintree **p, int k)
+{
+	int i;
+	if (*p != NULL)
+	{
+		print_tree(&(*p)->right, k + 1);
+		for (i = 1; i <= k; i++)
+			cout <<" ";
+		cout <<"-"<< (*p)->data <<"-"<<endl;
+		print_tree(&(**p).left, k + 1);
+	}
+}
+
+int check_left(bintree *p)
+{
+	if (p->left != NULL)
+	{
+		check_left(p->left);
+		sum++;
+	}
+	if (p->right != NULL)
+		check_left(p->right);
+	return sum;
+}
+
+int main()
+{
+	setlocale(LC_CTYPE, "Russian");
+	build_tree();
+	print_tree(&tree, 1);
+	cout<<check_left(tree)<<endl;
+	system("pause");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Листинг #1            Бинарное дерево, представление          Borland C++ 3.1
+#include <iostream>
+#include <conio.h>
+using namespace std;
+//Наша структура
+struct node
+{
+	int info;                           //Информационное поле
+	node *l, *r;                        //Левая и Правая часть дерева
+};
+
+node *tree = NULL;                      //Объявляем переменную, тип которой структура Дерево
+
+										/*ФУНКЦИЯ ЗАПИСИ ЭЛЕМЕНТА В БИНАРНОЕ ДЕРЕВО*/
+void push(int a, node **t)
+{
+	if ((*t) == NULL)                   //Если дерева не существует
+	{
+		(*t) = new node;                //Выделяем память
+		(*t)->info = a;                 //Кладем в выделенное место аргумент a
+		(*t)->l = (*t)->r = NULL;       //Очищаем память для следующего роста
+		return;                         //Заложили семечко, выходим
+	}
+	//Дерево есть
+	if (a > (*t)->info) push(a, &(*t)->r); //Если аргумент а больше чем текущий элемент, кладем его вправо
+	else push(a, &(*t)->l);         //Иначе кладем его влево
+}
+
+/*ФУНКЦИЯ ОТОБРАЖЕНИЯ ДЕРЕВА НА ЭКРАНЕ*/
+void print(node *t, int u)
+{
+	if (t == NULL) return;                  //Если дерево пустое, то отображать нечего, выходим
+	else //Иначе
+	{
+		print(t->r, ++u);                   //С помощью рекурсивного посещаем левое поддерево
+		for (int i = 0; i<u; ++i) cout << "-";
+		cout << t->info << endl;            //И показываем элемент
+		u--;
+	}
+	print(t->l, ++u);                       //С помощью рекурсии посещаем правое поддерево
+}
+
+int main()
+{ 
+	system("chcp 1251");
+	int n;                              //Количество элементов
+	int s;                              //Число, передаваемое в дерево
+	cout << "введите количество элементов:  ";
+	cin >> n;                           //Вводим количество элементов
+
+	for (int i = 0; i<n; ++i)
+	{
+		cout << "ведите число:  ";
+		cin >> s;                       //Считываем элемент за элементом
+
+		push(s, &tree);                 //И каждый кладем в дерево
+	}
+	cout << "ваше дерево:\n";
+	print(tree, 0);
+	system("pause");
+}

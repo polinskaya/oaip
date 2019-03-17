@@ -1,0 +1,227 @@
+заголовок:
+#pragma once
+#define HASHDEL (void*) -1
+struct Object
+{
+	void** data;
+	Object(int, int(*)(void*));
+	int size;  int N;
+	int(*getKey)(void*);
+	bool insert(void*);				//для записи
+	int searchInd(int key);			//для поиска
+	void* search(int key);			//основная для поиска
+	void* deleteByKey(int key);			//удаление по ключу
+	bool deleteByValue(void*);			//удаление по значению нот юз
+	void scan(void(*f)(void*));			//вывод
+	double coeffFull();					//коэфициент заполнения
+};
+static void* DEL = (void*)HASHDEL;
+Object create(int size, int(*getkey)(void*));
+#undef HASHDEL
+
+
+
+
+функции:
+#include "LR14_h.h"
+#include <iostream>
+int HashFunction(int key, int size, int p)    //Хэш-функция
+{
+	int modul = (p + key) % size;
+	return modul;
+}
+//-------------------------------
+int Next_hash(int hash, int size, int p)		//хэш-функция для решения коллизий
+{
+	return (hash + 5 * p + 3 * p * p) % size;
+}
+ //Изменить функцию вычисления хэш для решения коллизии на линейную 
+ //функцию, которая строится на основе формулы: 
+ //h(key, i) = (h'(key) + i)*hashTableSize.
+int Next_hashNew(int hash, int size, int p) //новая для решения коллизии 
+{
+	return (hash + p) % size;
+}
+//-------------------------------
+Object create(int size, int(*getkey)(void*))		//для создания
+{
+	return *(new Object(size, getkey));
+}
+//-------------------------------
+Object::Object(int size, int(*getkey)(void*))
+{
+	N = 0;
+	this->size = size;
+	this->getKey = getkey;
+	this->data = new void*[size];
+	for (int i = 0; i < size; ++i)
+		data[i] = NULL;
+}
+//-------------------------------
+bool Object::insert(void* d)						//для записи, функция вызова хэш-функций и проверки
+{
+	bool b = false;
+	if (N != size)
+		for (int i = 0, t = getKey(d), j = HashFunction(t, size, 0);		//вызов хэш функции
+			i != size && !b;  j = Next_hashNew(j, size, ++i))			//вызов второй хэш-ф
+			if (data[j] == NULL || data[j] == DEL)						//проверка
+			{
+				data[j] = d;
+				N++;
+				b = true;
+			}
+	return b;
+}
+//-------------------------------
+int Object::searchInd(int key)								//поиск по ключу
+{
+	int t = -1;
+	bool b = false;
+	if (N != 0)
+		for (int i = 0, j = HashFunction(key, size, 0);
+			data[j] != NULL && i != size && !b;	j = Next_hashNew(j, size, ++i))
+			if (data[j] != DEL)
+				if (getKey(data[j]) == key)
+				{
+					t = j;
+					b = true;
+				}
+	return t;
+}
+//-------------------------------
+void* Object::search(int key)				//поиск
+{
+	int t = searchInd(key);
+	return(t >= 0) ? (data[t]) : (NULL);
+}
+//-------------------------------	
+void* Object::deleteByKey(int key)					//удаление по ключу
+{
+	int i = searchInd(key);
+	void* t = data[i];
+	if (t != NULL)
+	{
+		data[i] = DEL;
+		N--;
+	}
+	return t;
+}
+//-------------------------------
+bool Object::deleteByValue(void* d)
+{
+	return(deleteByKey(getKey(d)) != NULL);
+}
+//-------------------------------
+void Object::scan(void(*f)(void*))						//вывод хэш-таблицы
+{
+	for (int i = 0; i < this->size; i++)
+	{
+		std::cout << " Element [" << i << "] ";
+		if ((this->data)[i] == NULL)
+			std::cout << "NULL" << std::endl;
+		else
+			if ((this->data)[i] == DEL)
+				std::cout << "is delete." << std::endl;
+			else
+				f((this->data)[i]);
+	}
+}
+
+
+
+
+сама табл :
+
+
+#include "LR14_h.h"
+#include <conio.h>
+#include <iostream>
+using namespace std;
+struct AAA
+{
+	int key;
+	char *mas;
+	AAA(int k, char*z)
+	{
+		key = k;  mas = z;
+	} AAA() {}
+};
+//-------------------------------
+int key(void* d)
+{
+	AAA* f = (AAA*)d;   return f->key;
+}
+//-------------------------------
+void AAA_print(void* d)															//функция вывода хэш-таблицы
+{
+	cout << "Key is " << ((AAA*)d)->key << " | " << ((AAA*)d)->mas << "\n";
+}
+//-------------------------------
+int main()
+{
+	setlocale(LC_ALL, "rus");
+	int siz = 10;
+	cout << "Enter size: ";
+	cin >> siz;
+	Object H = create(siz, key);   //создать хэш-таблицу	
+	int choice;  int k;
+	for (;;)
+	{
+		cout << "1 - Hash table output;\n";
+		cout << "2 - Add element;\n";
+		cout << "3 - Delete element;\n";
+		cout << "4 - Find element;\n";
+		cout << "0 - Exit;\n\n";
+		cout << "Your choice: ";
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 0:
+			exit(0);
+		case 1:									//вывод
+			H.scan(AAA_print);
+			break;
+		case 2:									//добавление элемента
+		{
+			AAA *a = new AAA;
+			char *str = new char[20];
+			cout << "Enter element (key): ";
+			cin >> k;
+			a->key = k;
+			cout << "Enter line: ";
+			cin >> str;
+			a->mas = str;
+			if (H.N == H.size)
+				cout << "Table is full.\n";
+			else
+				H.insert(a);
+			break;
+		}
+		case 3:									//удаление элемента
+		{
+			cout << "Enter key for deleting: ";
+			cin >> k;
+			H.deleteByKey(k);
+			break;
+		}
+		case 4:
+		{
+			cout << "Enter key for search: ";
+			cin >> k;
+			if (H.search(k) == NULL)
+				cout << "Wasn't found\n";
+			else
+				AAA_print(H.search(k));
+
+			break;
+		}
+		default:
+		{
+			cout << "Wasn't found\n";
+			break;
+		}
+		}
+	}
+	return 0;
+}

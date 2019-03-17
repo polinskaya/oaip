@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+int sum = 0, sum2=0;
+struct bintree
+{
+	int data;
+	bintree *left,*right;
+};
+bintree *tree;
+
+void insert(int x, bintree **p)
+{
+	if (*p == NULL)
+	{
+		*p = new(bintree);
+		(*p)->data = x;
+		(*p)->left = (*p)->right = NULL;
+	}
+	else
+		if (x < (**p).data)
+			insert(x, &((**p).left));
+		else
+			if (x > (*p)->data)
+				insert(x, &(*p)->right);
+}
+
+void build_tree()
+{
+	int x;
+	cout << "Give me numbers (0 - end of building): " << endl; cin >> x;
+	while (x != 0)
+	{
+		insert(x, &tree);
+			cin >> x;
+	}
+}
+
+
+void print_tree(bintree **p, int k)
+{
+	int i;
+	if (*p != NULL)
+	{
+		print_tree(&(*p)->right, k + 1);
+		for (i = 1; i <= k; i++)
+			cout <<" ";
+		cout <<"-"<< (*p)->data <<"-"<<endl;
+		print_tree(&(**p).left, k + 1);
+	}
+}
+
+int check_left(bintree *p)
+{
+	if (p->left != NULL)
+	{
+		check_left(p->left);
+		sum++;
+	}
+
+	if (p->right != NULL)
+	{
+		check_left(p->right);
+		sum2++;
+	}
+	return (sum+sum2);
+}
+
+
+
+int main()
+{
+	setlocale(LC_CTYPE, "Russian");
+	build_tree();
+	print_tree(&tree, 1);
+	cout<<check_left(tree)<<endl;
+	system("pause");
+}

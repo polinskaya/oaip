@@ -1,0 +1,101 @@
+СИММЕТРИЧНОСТЬ СТРОКИ С ТОЧКОЙ(ИЛИ БЕЗ) ЧЕРЕЗ СТЕКИ
+#include "stdafx.h" 
+#include <iostream> 
+using namespace std; 
+
+struct ElementStek // struct ElementStek- - 
+{ 
+char d; 
+struct ElementStek* next; 
+}; 
+
+struct Steck 
+{ 
+void push(int d); 
+char pop(); 
+ElementStek* tail = nullptr; 
+}; 
+
+void Steck::push(int d) 
+{ 
+ElementStek* pv = new ElementStek; 
+pv->d = d; // 
+pv->next = tail; 
+tail = pv; 
+}; 
+
+char Steck::pop() 
+{ 
+if (tail == nullptr) 
+{ 
+return ' '; 
+} 
+char tmp = tail->d; // tmp 
+ElementStek* pv = tail; // 
+tail = tail->next; // . 
+delete pv; // , 
+/* cout tmp " ";*/ // . 
+return tmp; 
+}; 
+
+void show(Steck* steck); 
+void clear(Steck*& p); 
+
+int main() 
+{ 
+char* stringg = new char[64]; 
+stringg[0] = '\0'; 
+
+Steck* MyStk1 = new Steck; 
+Steck* MyStk2 = new Steck; 
+cin»stringg; 
+int length = strlen(stringg); 
+
+if (stringg[length-1] == '.') // убераем точку 
+{ 
+char* strr = new char[64]; 
+strr[0] = '\0'; 
+for (int i = 0; i< length-1; i++) 
+{ 
+strr[i] = stringg[i]; 
+} 
+stringg = strr; 
+length -= 1;//уменьшаем размер 
+} 
+
+int centerIndex = length/2; 
+//заносим в первый стек с начала и до середины 
+for (int i = 0; i < centerIndex; i++) 
+{ 
+MyStk1->push(stringg[i]); 
+} 
+//заносим во второй стек с конца до середины 
+for (int i = length-1; i >= centerIndex; i--) 
+{ 
+MyStk2->push(stringg[i]); 
+} 
+
+bool isSem = true; 
+while (centerIndex > 0) 
+{ 
+char one = MyStk1->pop(); 
+char two = MyStk2->pop(); 
+if (one != two) 
+{ 
+isSem = false; 
+break; 
+} 
+centerIndex--; 
+} 
+
+if (isSem) 
+{ 
+cout « "Yes" « endl; 
+system("pause"); 
+return 0; 
+} 
+
+cout « "No" « endl; 
+system("pause"); 
+return 0; 
+}

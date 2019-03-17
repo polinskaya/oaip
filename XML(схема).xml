@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?> 
+<?xml-stylesheet type="text/css" href="CSS.css"?> 
+<Specialization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Specialization.xsd"> 
+	<University> 
+		<Name>БГУИР</Name> 
+		<Mark>315</Mark> 
+		<Students>48</Students> 
+		<City>Минск</City> 
+	</University> 
+	<University> 
+		<Name>ГГТУ им. Сухого</Name> 
+		<Mark>296</Mark> 
+		<Students>58</Students> 
+		<City>Гомель</City> 
+	</University> 
+	<University> 
+		<Name>ГГТУ им. Я. Купалы</Name> 
+		<Mark>301</Mark> 
+		<Students>55</Students> 
+		<City>Гродно</City> 
+	</University> 
+</Specialization>
+

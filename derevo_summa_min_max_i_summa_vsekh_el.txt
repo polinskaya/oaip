@@ -1,0 +1,103 @@
+#include "stdafx.h"
+#include <iostream>
+
+
+struct treenode{
+	int val;
+	treenode* left;
+	treenode* right;
+};
+
+//добавление элемента
+void add(treenode*& p, int val){
+	if (p == NULL){
+		p = new (std::nothrow) treenode();
+		if (p != NULL){
+			p->left = p->right = nullptr;
+			p->val = val;
+		}
+		return;
+	}
+	if (val < p->val)
+		add(p->left, val);
+	else
+		add(p->right, val);
+}
+
+//удаление дерева
+void treenode_clear(treenode* p){
+	if (p != nullptr){
+		if (p->left != nullptr)
+			treenode_clear(p->left);
+		if (p->right != nullptr)
+			treenode_clear(p->right);
+		delete p;
+	}
+}
+
+//максимальный элемент
+int treenode_max(const treenode* p){
+	if (p == nullptr)
+		return 0;
+	while (p->right != nullptr)
+		p = p->right;
+	return p->val;
+}
+int treenode_min(const treenode* p){
+	if (p == nullptr)
+		return 0;
+	while (p->left != nullptr)
+		p = p->left;
+	return p->val;
+}
+
+void print(treenode* node, int node_count)
+{
+	int a = 0;
+	if (node != nullptr)
+	{
+		int counter = 0;
+		while (counter < node_count)
+		{
+			putchar(' ');
+			counter++;
+		}
+		printf("%d\n", (*node).val);
+		
+		print((*node).left, node_count + 1);
+		
+	print((*node).right, node_count + 1);
+		
+	}
+}
+
+void summ(treenode* node, int &sum) {
+	if (node != NULL) {
+		sum += node->val;
+		summ(node->left, sum);
+		summ(node->right, sum);
+	}
+
+}
+
+int main(void){
+	treenode* t = nullptr;
+	int A[] = {8,3,10,1,6,14,4,7,13 };
+	for (unsigned i = 0; i < sizeof(A) / sizeof(A[0]); ++i)
+		add(t, A[i]);
+
+	int sum = 0;
+
+	std::cout << "max: " << treenode_max(t) << std::endl;
+
+	std::cout << "min: " << treenode_min(t) << std::endl;
+
+	std::cout << "min+max: " << treenode_min(t) + treenode_max(t) << std::endl;
+
+	print(t, 0);
+
+	summ(t,sum);
+	std::cout << sum;
+	treenode_clear(t);
+	return 0;
+}

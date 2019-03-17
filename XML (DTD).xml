@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?> 
+<!DOCTYPE Specialization [
+	<!ELEMENT Specialization (University)>
+	<!ELEMENT University (Name, Mark, Students, City)>
+	<!ELEMENT Name (#PCDATA)>
+	<!ELEMENT Mark (#PCDATA)>
+	<!ELEMENT Students (#PCDATA)>
+	<!ELEMENT City (#PCDATA)>
+	]>
+<?xml-stylesheet type="text/css" href="CSS.css"?>
+<Specialization>
+	<University>
+		<Name>Университет: БГУИР</Name>
+		<Mark>Проходной балл: 315</Mark>
+		<Students>План набора: 48</Students>
+		<City>Город: Минск</City>
+	</University>
+	<University>
+		<Name>Университет: ГГТУ им. Сухого</Name>
+		<Mark>Проходной балл: 296</Mark>
+		<Students>План набора: 58</Students>
+		<City>Город: Гомель</City>
+	</University>
+	<University>
+		<Name>Университет: ГГТУ им. Я. Купалы</Name>
+		<Mark>Проходной балл: 301</Mark>
+		<Students>План набора: 55</Students>
+		<City>Город: Гродно</City>
+	</University>
+</Specialization>

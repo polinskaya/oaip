@@ -1,0 +1,132 @@
+ÓÄÀËÅÍÈÅ ÈÇ ÎÄÍÎÑÂßÇÍÎÃÎ ÑÏÈÑÊÀ İËÅÌÅÍÒÎÂ ÏÎÂÒÎĞßÁÙÈÕÑß ÁÎËÅÅ 2Õ ĞÀÇ
+// oneDirectListDeleteDobleElem.cpp : Defines the entry point for the console application. 
+// 
+
+#include "stdafx.h" 
+#include <iostream> 
+
+using namespace std; 
+
+struct slist 
+{ 
+slist* next; 
+int val; 
+}; 
+
+bool slist_add(slist*& lst, int val); 
+void slist_clear(slist* lst); 
+void slist_unique(slist* lst); 
+void del(slist *&p, float value); 
+
+int main(void) 
+{ 
+
+int n ; 
+
+cout«"Enter count of elements in list"«endl; 
+cin»n; 
+
+
+cout«"Enter elements of list"«endl; 
+slist* lst = nullptr; 
+for (int i = 0; i < n; ++i) 
+{ 
+int number; 
+cin»number; 
+slist_add(lst, number); 
+} 
+
+
+slist_unique(lst); 
+for (const slist* p = lst; p != nullptr; p = p->next) 
+std::cout « p->val « ' '; 
+cout«endl; 
+slist_clear(lst); 
+system("pause"); 
+return 0; 
+} 
+
+//óäàëåíèå äóáëèêàòîâ O(n^2) 
+void slist_unique(slist* lst) 
+{ 
+int* mass = new int[64]; 
+int count = 0; 
+slist *t, *q, *p = lst, *i = lst; 
+while (p != nullptr) 
+{ 
+for (t = i = p->next; i != nullptr;) 
+{ 
+if (i->val == p->val) 
+{ 
+mass[count] = i->val; 
+count++; 
+q = i->next; 
+if (t == i) 
+t = p->next = i->next; 
+else 
+t->next = i->next; 
+i = q; 
+continue; 
+} 
+t = i; 
+i = i->next; 
+} 
+p = p->next; 
+} 
+
+for (int index = 0; index < count; index++) 
+{ 
+del(lst, mass[index]); 
+} 
+
+} 
+
+void del(slist *&p, float value) // Óäàëåíèå ÷èñëà 
+{ 
+slist *previous, *current, *temp; 
+if (value == p->val) 
+{ temp = p; 
+p = p->next; // îòñîåäèíèòü óçåë 
+delete temp; //îñâîáîäèòü îòñîåäèíåííûé óçåë 
+return; 
+} 
+else 
+{ previous = p; 
+current = p->next; 
+while (current!= NULL && current->val != value) 
+{ previous = current; 
+current = current->next; // ïåğåéòè ê ñëåäóşùåìó 
+} 
+if (current!= NULL) 
+{ temp = current; 
+previous->next = current->next; 
+free(temp); 
+} 
+} 
+} 
+
+
+//äîáàâëåíèå 
+bool slist_add(slist*& lst, int val) 
+{ 
+slist* p = new(std::nothrow) slist(); 
+if (p != nullptr) 
+{ 
+p->val = val; 
+p->next = lst; 
+lst = p; 
+} 
+return (p != nullptr); 
+} 
+
+//óäàëåíèå âñåõ 
+void slist_clear(slist* lst) 
+{ 
+slist* t; 
+while (lst != nullptr) 
+{ 
+t = lst; 
+lst = lst->next; 
+delete t; 
+} 
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?>
+<?xml-stylesheet type="text/css" href="CSS.css"?>
+<Specialization>
+	<University>
+		<Name>БГУИР</Name>
+		<Mark>315</Mark>
+		<Students>48</Students>
+		<City>Минск</City>
+	</University>
+	<University>
+		<Name>ГГТУ им. Сухого</Name>
+		<Mark>296</Mark>
+		<Students>58</Students>
+		<City>Гомель</City>
+	</University>
+	<University>
+		<Name>ГГТУ им. Я. Купалы</Name>
+		<Mark>301</Mark>
+		<Students>55</Students>
+		<City>Гродно</City>
+	</University>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Spacialization">
+		<xs:element name="University">
+		<xs:complexType>
+         		<xs:sequence>
+            			<xs:element name="Name" type="xs:string"/>
+            			<xs:element name="Mark" type="xs:integer"/>
+            			<xs:element name="Students" type="xs:integer"/>
+            			<xs:element name="City" type="xs:string"/>
+         		</xs:sequence>
+      		</xs:complexType>
+		</xs:element>
+	</xs:element>
+</xs:schema>
+</Specialization>

@@ -1,0 +1,119 @@
+// ConsoleApplication2.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "stdafx.h"
+#include <iostream>
+using namespace std;
+
+struct myStack
+{
+	int data;
+	myStack *next;
+};
+
+void s_push(myStack **top, int d)
+{
+	myStack *n;
+	n = new myStack;
+	n->data = d;
+	if (top == NULL)
+	{
+		*top = n;
+	}
+	else
+	{
+		n->next = *top;
+		*top = n;
+	}
+}
+
+void s_delete(myStack **top, int N)
+{
+	myStack *n = *top;
+	myStack *pred = NULL;
+	while (n != NULL)
+	{
+		if (n->data == N)
+		{
+			if (!n->next) // == (n->next == NULL)
+			{
+				pred->next = n->next; //pred = NULL;
+				delete n;
+				n = pred;
+				//break;
+			}
+			else if (!pred)
+			{
+				*top = n->next;
+				delete n;
+				n = *top;
+				//break;
+			}
+			else
+			{
+				pred->next = n->next;
+				delete n;
+				n = *top;
+				//break;
+			}
+
+		}
+		else
+		{
+			pred = n;
+			n = n->next;
+		}
+	}
+}
+
+void s_print(myStack **top)
+{
+	myStack *n = *top;
+	while (n)
+	{
+		cout << n->data << ' ' << endl;
+		n = n->next;
+	}
+}
+
+int main()
+{
+	myStack *top = NULL;
+	int choice;
+	int el;
+	for (;;)
+	{
+		cout << "1 - Element input" << endl;
+		cout << "2 - Stack output" << endl;
+		cout << "3 - Delite one element" << endl;
+		cout << "4 - Exit" << endl;
+		cout << endl;
+		cout << "Your choice: ";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			cout << "Input element: ";
+			cin >> el;
+			s_push(&top, el);
+			break;
+		case 2:
+			cout << "Stack: " <<endl;
+			s_print(&top);
+			break;
+		case 3:
+			cout << "Input the element you want to delite: ";
+			cin >> el;
+			s_delete(&top, el);
+			cout << "Now your stack is following: "<<endl;
+			s_print(&top);
+		case 4:
+			return 0;
+		default:
+			cout << "Error input" << endl;
+			break;
+		}
+	}
+	system("pause");
+}

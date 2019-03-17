@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+ function readfile(fileinputobj){
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            document.write(reader.result);
+
+            //Использование DOMParser для доступа к XML-документу
+			
+            var parser = new DOMParser(),//стандартный объект обработки Б который в экспл встроен
+            xmlDoc = parser.parseFromString(reader.result, "text/xml");
+
+            if (xmlDoc.documentElement){
+              
+               xmlDoc.documentElement.nodeName == 'root'
+            }
+
+                      //Использование DOM интерпритатора для доступа к HTML-документу
+            var doc=document.createElement("div");
+            doc.innerHTML=reader.result;
+            
+    }
+
+    reader.readAsText(fileinputobj.files[0]);   
+}
+</script>
+</script>
+</head>
+<body>
+<input type="file" onchange="readfile(this)" >
+</body>
+</html>

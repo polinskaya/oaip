@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?> 
+<root>
+<student >
+<b>
+	<name>Евгения</name>
+    <surname>Развадовская</surname>
+	<x>19 лет</x>
+</b>
+<br>
+<univer>Университет:БГТУ,ФИТ</univer>
+</student>
+</root>

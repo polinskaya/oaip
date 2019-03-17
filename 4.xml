@@ -1,0 +1,22 @@
+<?xml version = "1.0"?> 
+<?xml-stylesheet type = "text/xsl" href = "2.xslt"?> 
+<class> 
+   <student rollno = "34"> 
+      <firstname>Александр</firstname> 
+      <lastname>Глушко</lastname> 
+      <nickname>1996</nickname> 
+      <marks>5</marks> 
+   </student> 
+   <student rollno = "45"> 
+      <firstname>Диана</firstname> 
+      <lastname>Жилинская</lastname> 
+      <nickname>1998</nickname> 
+      <marks>6</marks> 
+   </student> 
+   <student rollno = "27"> 
+      <firstname>Мария</firstname> 
+      <lastname>Лакевич</lastname> 
+      <nickname>1997</nickname> 
+      <marks>7</marks>
+   </student>
+</class>
